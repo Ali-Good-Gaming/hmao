@@ -1,0 +1,31 @@
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const paths = document.querySelectorAll('#yugra-map path[data-district]');
+        const infoDiv = document.getElementById('district-info');
+
+        paths.forEach(path => {
+            // Сохраняем исходный цвет
+            const originalFill = path.getAttribute('fill');
+
+            // Наведение мыши
+            path.addEventListener('mouseover', () => {
+                path.style.fill = '#ffeb3b'; // Жёлтый при наведении
+                path.style.stroke = '#000000';
+                path.style.strokeWidth = '2';
+            });
+
+            // Убираем подсветку
+            path.addEventListener('mouseout', () => {
+                path.style.fill = originalFill; // Возвращаем исходный цвет
+                path.style.stroke = originalFill;
+                path.style.strokeWidth = '1';
+            });
+
+            // Клик по району
+            path.addEventListener('click', () => {
+                const district = path.getAttribute('data-district');
+                infoDiv.textContent = `Вы выбрали: ${district}`;
+            });
+        });
+    });
+</script>
