@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ХМАО—Югра | Официальный туристический портал</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto+Slab:wght@300;400;700&display=swap" rel="stylesheet">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+    <style>
+        :root {
+            --primary: #2c7744;
+            --secondary: #f9a51a;
+            --accent: #d32f2f;
+            --light: #f5f9fc;
+            --dark: #1a3c29;
+            --text: #333333;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4 {
+            font-family: 'Roboto Slab', serif;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: var(--shadow);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: var(--transition);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-right: 15px;
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0;
+            color: var(--primary);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .search-bar {
+            display: flex;
+            width: 300px;
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            border: 2px solid var(--primary);
+        }
+        
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 12px 20px;
+            font-size: 1rem;
+            outline: none;
+        }
+        
+        .search-bar button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .search-bar button:hover {
+            background: var(--secondary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.3)), url('https://images.unsplash.com/photo-1589560368666-0d3db1f0a8a0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            position: relative;
+            margin-top: 80px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+            z-index: 2;
+        }
+        
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+        }
+        
+        .btn {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        
+        .btn:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Sections */
+        section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            display: inline-block;
+            padding-bottom: 15px;
+        }
+        
+        .section-title h2:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        /* About Section */
+        .about-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        .about-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: var(--transition);
+        }
+        
+        .about-image img:hover {
+            transform: scale(1.05);
+        }
+        
+        /* Attractions Section */
+        .attractions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .attraction-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .attraction-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-image {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .attraction-card:hover .card-image img {
+            transform: scale(1.1);
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .card-content p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+        
+        /* Interactive Map */
+        .map-section {
+            background: linear-gradient(to bottom, #e6f7ff, #ffffff);
+            padding: 80px 0;
+        }
+        
+        .map-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .map-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .map-wrapper {
+            flex: 1;
+            min-width: 300px;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+        
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Districts Section */
+        .districts {
+            background: var(--dark);
+            color: white;
+        }
+        
+        .districts .section-title h2 {
+            color: white;
+        }
+        
+        .districts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+        }
+        
+        .district-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            backdrop-filter: blur(5px);
+        }
+        
+        .district-card:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+        }
+        
+        .district-card i {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        /* Culture Section */
+        .culture-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .culture-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .culture-gallery {
+            flex: 1;
+            min-width: 300px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        
+        .gallery-item {
+            border-radius: 10px;
+            overflow: hidden;
+            height: 200px;
+            box-shadow: var(--shadow);
+        }
+        
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+        
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1518998053901-5348d3961a04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            color: white;
+        }
+        
+        .contact .section-title h2 {
+            color: white;
+        }
+        
+        .contact-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+        
+        .contact-info-item i {
+            font-size: 1.8rem;
+            color: var(--secondary);
+            margin-right: 15px;
+            width: 50px;
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 60px 0 20px;
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-col h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 12px;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: var(--transition);
+            display: block;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            transform: translateX(5px);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .search-bar {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            .hero {
+                margin-top: 140px;
+            }
+            
+            .hero h2 {
+                font-size: 2.3rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            section {
+                padding: 60px 0;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 1.8rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <img src="logo.svg" alt="ХМАО—Югра">
+                <h1>ХМАО—<span>Югра</span></h1>
+            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Поиск по сайту...">
+                <button><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Откройте для себя удивительный мир Югры</h2>
+            <p>Природные богатства, древняя культура и современные технологии</p>
+            <a href="#about" class="btn">Узнать больше</a>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>О регионе</h2>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>Ханты-Мансийский автономный округ — Югра — один из самых динамично развивающихся регионов России, расположенный в центре Западной Сибири. Это край с уникальной природой, богатыми природными ресурсами и древней культурой коренных народов.</p>
+                    <p>Югра занимает площадь 534,8 тыс. кв. км, что сопоставимо с размерами таких стран как Франция или Испания. На территории округа проживает более 1,6 млн человек, представляющих более 120 национальностей.</p>
+                    <p>Регион является энергетическим сердцем России — здесь добывается более 40% российской нефти и 7% газа. Однако Югра — это не только нефть и газ, но и уникальная природа, древняя культура коренных народов ханты и манси, современные города и богатые туристические возможности.</p>
+                    <a href="#" class="btn">Подробнее об истории</a>
+                </div>
+                <div class="about-image">
+                    <img src="about-image.jpg" alt="Природа Югры">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attractions Section -->
+    <section class="attractions">
+        <div class="container">
+            <div class="section-title">
+                <h2>Достопримечательности</h2>
+            </div>
+            <div class="attractions-grid">
+                <div class="attraction-card">
+                    <div class="card-image">
+                        <img src="attraction1.jpg" alt="Природный парк «Самаровский чугас»">
+                    </div>
+                    <div class="card-content">
+                        <h3>Природный парк «Самаровский чугас»</h3>
+                        <p>Уникальный природный комплекс в черте Ханты-Мансийска с реликтовыми кедровыми лесами и древними археологическими памятниками.</p>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                
+                <div class="attraction-card">
+                    <div class="card-image">
+                        <img src="attraction2.jpg" alt="Этнографический музей под открытым небом «Торум Маа»">
+                    </div>
+                    <div class="card-content">
+                        <h3>Музей «Торум Маа»</h3>
+                        <p>Этнографический музей под открытым небом, воссоздающий традиционное поселение народов ханты и манси с аутентичными постройками.</p>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                
+                <div class="attraction-card">
+                    <div class="card-image">
+                        <img src="attraction3.jpg" alt="Археопарк">
+                    </div>
+                    <div class="card-content">
+                        <h3>Археопарк</h3>
+                        <p>Скульптурная композиция из бронзы, изображающая животных ледникового периода и первобытных людей, расположенная в Ханты-Мансийске.</p>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+                
+                <div class="attraction-card">
+                    <div class="card-image">
+                        <img src="attraction4.jpg" alt="Река Обь">
+                    </div>
+                    <div class="card-content">
+                        <h3>Река Обь</h3>
+                        <p>Одна из крупнейших рек мира, протекающая по территории Югры. Предлагает уникальные возможности для круизов, рыбалки и наблюдения за природой.</p>
+                        <a href="#" class="btn">Подробнее</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Map Section -->
+    <section class="map-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Интерактивная карта Югры</h2>
+            </div>
+            <div class="map-container">
+                <div class="map-info">
+                    <h3>Исследуйте регион</h3>
+                    <p>На интерактивной карте вы можете увидеть основные города, природные достопримечательности и туристические маршруты Ханты-Мансийского автономного округа.</p>
+                    <p>Югра разделена на 13 городских округов и 9 муниципальных районов. Каждый район имеет свои уникальные особенности и достопримечательности.</p>
+                    <p>Кликните на маркер, чтобы узнать больше о конкретном месте, или используйте элементы управления для навигации по карте.</p>
+                    <a href="#" class="btn">Скачать туристическую карту</a>
+                </div>
+                <div class="map-wrapper">
+                    <div id="map"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Districts Section -->
+    <section class="districts">
+        <div class="container">
+            <div class="section-title">
+                <h2>Муниципальные образования</h2>
+            </div>
+            <div class="districts-grid">
+                <div class="district-card">
+                    <i class="fas fa-city"></i>
+                    <h3>Ханты-Мансийск</h3>
+                    <p>Столица округа, современный город с уникальной архитектурой</p>
+                </div>
+                
+                <div class="district-card">
+                    <i class="fas fa-oil-well"></i>
+                    <h3>Сургут</h3>
+                    <p>Энергетическая столица России, крупнейший город округа</p>
+                </div>
+                
+                <div class="district-card">
+                    <i class="fas fa-university"></i>
+                    <h3>Нижневартовск</h3>
+                    <p>Культурный и образовательный центр региона</p>
+                </div>
+                
+                <div class="district-card">
+                    <i class="fas fa-tree"></i>
+                    <h3>Нягань</h3>
+                    <p>Город в окружении тайги, центр лесной промышленности</p>
+                </div>
+                
+                <div class="district-card">
+                    <i class="fas fa-water"></i>
+                    <h3>Мегион</h3>
+                    <p>Нефтяная столица Приобья, город на берегу Оби</p>
+                </div>
+                
+                <div class="district-card">
+                    <i class="fas fa-snowflake"></i>
+                    <h3>Радужный</h3>
+                    <p>Современный город нефтяников с развитой инфраструктурой</p>
+                </div>
+                
+                <div class="district-card">
+                    <i class="fas fa-igloo"></i>
+                    <h3>Белоярский</h3>
+                    <p>Центр традиционной культуры народов ханты</p>
+                </div>
+                
+                <div class="district-card">
+                    <i class="fas fa-fish"></i>
+                    <h3>Октябрьский район</h3>
+                    <p>Край рек и озер, рай для рыбаков и охотников</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Culture Section -->
+    <section class="culture">
+        <div class="container">
+            <div class="section-title">
+                <h2>Культура и традиции</h2>
+            </div>
+            <div class="culture-container">
+                <div class="culture-text">
+                    <p>Ханты-Мансийский автономный округ — Югра — это уникальный регион, где переплетаются древние традиции коренных народов Севера и современная культура.</p>
+                    <p>Коренные народы Югры — ханты и манси — сохраняют свои традиции, язык, верования и образ жизни на протяжении многих веков. Их культура неразрывно связана с природой, оленеводством, рыболовством и охотой.</p>
+                    <p>В Югре ежегодно проводятся традиционные праздники: Медвежий праздник, Вороний день, праздник Трясогузки, которые привлекают туристов со всего мира. Сохраняются традиционные ремесла: резьба по кости и дереву, бисероплетение, изготовление национальной одежды.</p>
+                    <a href="#" class="btn">Традиции и обычаи</a>
+                </div>
+                <div class="culture-gallery">
+                    <div class="gallery-item">
+                        <img src="culture1.jpg" alt="Традиционная одежда">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="culture2.jpg" alt="Национальный праздник">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="culture3.jpg" alt="Ремесла">
+                    </div>
+                    <div class="gallery-item">
+                        <img src="culture4.jpg" alt="Чум">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Контакты</h2>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Адрес</h3>
+                            <p>628011, Ханты-Мансийск, ул. Мира, 120</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Телефон</h3>
+                            <p>+7 (3467) 32-22-22</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@hmao-yugra.ru</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Режим работы</h3>
+                            <p>Пн-Пт: 9:00 - 18:00<br>Сб-Вс: выходной</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <h3>Обратная связь</h3>
+                    <form>
+                        <div class="form-group">
+                            <label for="name">Имя</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="message">Сообщение</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>О Югре</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">История региона</a></li>
+                        <li><a href="#">Символика</a></li>
+                        <li><a href="#">География</a></li>
+                        <li><a href="#">Климат</a></li>
+                        <li><a href="#">Флора и фауна</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Туризм</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Туристические маршруты</a></li>
+                        <li><a href="#">Гостиницы</a></li>
+                        <li><a href="#">Туроператоры</a></li>
+                        <li><a href="#">События</a></li>
+                        <li><a href="#">Сувениры</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Культура</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Музеи</a></li>
+                        <li><a href="#">Театры</a></li>
+                        <li><a href="#">Фестивали</a></li>
+                        <li><a href="#">Народные промыслы</a></li>
+                        <li><a href="#">Кухня народов Севера</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-col">
+                    <h3>Контакты</h3>
+                    <p>Туристический информационный центр ХМАО—Югра</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-vk"></i></a>
+                        <a href="#"><i class="fab fa-telegram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p>&copy; 2023 Официальный туристический портал Ханты-Мансийского автономного округа — Югры. Все права защищены.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Initialize Google Map
+        function initMap() {
+            const center = {lat: 61.025, lng: 69.095};
+            const map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 6,
+                center: center,
+                styles: [
+                    {
+                        "featureType": "administrative",
+                        "elementType": "labels.text.fill",
+                        "stylers": [{"color": "#444444"}]
+                    },
+                    {
+                        "featureType": "landscape",
+                        "elementType": "all",
+                        "stylers": [{"color": "#f2f2f2"}]
+                    },
+                    {
+                        "featureType": "poi",
+                        "elementType": "all",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "road",
+                        "elementType": "all",
+                        "stylers": [{"saturation": -100}, {"lightness": 45}]
+                    },
+                    {
+                        "featureType": "road.highway",
+                        "elementType": "all",
+                        "stylers": [{"visibility": "simplified"}]
+                    },
+                    {
+                        "featureType": "road.arterial",
+                        "elementType": "labels.icon",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "transit",
+                        "elementType": "all",
+                        "stylers": [{"visibility": "off"}]
+                    },
+                    {
+                        "featureType": "water",
+                        "elementType": "all",
+                        "stylers": [{"color": "#a0d3ff"}, {"visibility": "on"}]
+                    }
+                ]
+            });
+
+            // Add markers for important locations
+            const locations = [
+                {lat: 61.0042, lng: 69.0019, title: 'Ханты-Мансийск', info: 'Столица Югры'},
+                {lat: 61.25, lng: 73.4167, title: 'Сургут', info: 'Крупнейший город Югры'},
+                {lat: 60.9333, lng: 76.5667, title: 'Нижневартовск', info: 'Город нефтяников'},
+                {lat: 62.1406, lng: 65.3936, title: 'Нягань', info: 'Лесная столица Югры'},
+                {lat: 61.0333, lng: 76.1167, title: 'Мегион', info: 'Город на берегу Оби'},
+                {lat: 62.1333, lng: 77.4667, title: 'Радужный', info: 'Молодой нефтяной город'},
+                {lat: 63.7167, lng: 66.6667, title: 'Белоярский', info: 'Центр традиционной культуры'},
+                {lat: 61.6708, lng: 64.7103, title: 'Кондинское', info: 'Историческое поселение'},
+                {lat: 61.0989, lng: 72.6036, title: 'Пыть-Ях', info: 'Город нефтяников'},
+                {lat: 62.2589, lng: 74.4864, title: 'Когалым', info: 'Современный город нефтяников'},
+            ];
+
+            locations.forEach(location => {
+                new google.maps.Marker({
+                    position: location,
+                    map: map,
+                    title: location.title
+                });
+            });
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            if (window.scrollY > 100) {
+                header.style.padding = '10px 0';
+                header.style.boxShadow = '0 4px 10px rgba(0,0,0,0.1)';
+            } else {
+                header.style.padding = '15px 0';
+                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)';
+            }
+        });
+
+        // Search functionality
+        document.querySelector('.search-bar button').addEventListener('click', () => {
+            const searchTerm = document.querySelector('.search-bar input').value;
+            if (searchTerm.trim() !== '') {
+                alert(`Поиск по запросу: ${searchTerm}`);
+                // В реальном приложении здесь будет код для поиска
+            }
+        });
+
+        // Form submission
+        document.querySelector('.contact-form form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Спасибо за ваше сообщение! Мы свяжемся с вами в ближайшее время.');
+            e.target.reset();
+        });
+    </script>
+</body>
+</html>
